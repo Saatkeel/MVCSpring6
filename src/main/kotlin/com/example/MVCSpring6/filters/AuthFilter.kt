@@ -22,7 +22,7 @@ class AuthFilter : HttpFilter() {
         this.context = filterConfig.servletContext
     }
 
-        override fun doFilter(request: HttpServletRequest?, response: HttpServletResponse?, chain: FilterChain?) {
+    override fun doFilter(request: HttpServletRequest?, response: HttpServletResponse?, chain: FilterChain?) {
         val cookies = request!!.cookies
         if (cookies == null)
             response!!.sendRedirect("/login")

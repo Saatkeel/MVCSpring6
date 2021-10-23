@@ -58,7 +58,6 @@ class LoginServlet : HttpServlet() {
     }
 
     override fun doGet(request: HttpServletRequest?, response: HttpServletResponse?) {
-        response!!.contentType = "text/html"
         val out = response!!.writer
         out.println(
             "<!DOCTYPE html>\n" +

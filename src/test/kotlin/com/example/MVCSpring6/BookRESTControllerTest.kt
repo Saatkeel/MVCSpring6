@@ -3,7 +3,9 @@ package com.example.MVCSpring6
 import com.example.MVCSpring6.dto.Address
 import com.example.MVCSpring6.service.AddressRepository
 import io.mockk.MockKAnnotations
-import org.junit.Assert.*
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,6 +39,14 @@ internal class BookRESTControllerTest {
     @Before
     fun authInit() {
         headers.add("Cookie", "auth=1")
+        addressRepository.getAddresses().put(1, Address("Kukuevo"))
+        addressRepository.getAddresses().put(2, Address("Ulica pushkina"))
+        addressRepository.getAddresses().put(3, Address("Dom Kolotushkina"))
+    }
+
+    @After
+    fun resetDb() {
+        addressRepository.deleteAll()
     }
 
     @Test
@@ -47,7 +57,10 @@ internal class BookRESTControllerTest {
             HttpEntity<Any>(headers),
             AddressRepository::class.java
         )
-        println(result1)
+//        val book = ConcurrentHashMap<Int, Address>()
+//        book[1] = Address("test1")
+//        book[2] = Address("Testanika 2")
+//        every { addressRepository.getAddresses() } returns book
         assertEquals(addressRepository, result1.body)
     }
 
@@ -69,60 +82,63 @@ internal class BookRESTControllerTest {
     }
 
     @Test
-    fun testAdd(){
+    fun testAdd() {
         val objEmp = "testAddressNew"
         val result1 = testRestTemplate.exchange(
             "/api/add",
             HttpMethod.POST,
-            HttpEntity<Any>(objEmp,headers),
+            HttpEntity<Any>(objEmp, headers),
             AddressRepository::class.java
         )
-        assertTrue(result1.statusCode.value()==200)
+        assertTrue(result1.statusCode.value() == 200)
     }
+
     @Test
-    fun testDelete(){
+    fun testDelete() {
         val result1 = testRestTemplate.exchange(
             "/api/1/delete",
             HttpMethod.DELETE,
             HttpEntity<Any>(headers),
             AddressRepository::class.java
         )
-        assertTrue(result1.statusCode.value()==200)
+        assertTrue(result1.statusCode.value() == 200)
     }
+
     @Test
-    fun testView(){
+    fun testView() {
         val result1 = testRestTemplate.exchange(
             "/api/1/view",
             HttpMethod.GET,
             HttpEntity<Any>(headers),
             Address::class.java
         )
-        assertEquals(Address("Kukuevo"),result1.body)
+        assertEquals(Address("Kukuevo"), result1.body)
     }
 
     @Test
-    fun testEdit(){
+    fun testEdit() {
         val objEmp = "newEditedAddress"
         val result1 = testRestTemplate.exchange(
             "/api/1/edit",
             HttpMethod.PUT,
-            HttpEntity<Any>(objEmp,headers),
+            HttpEntity<Any>(objEmp, headers),
             AddressRepository::class.java
         )
-        assertTrue(result1.statusCode.value()==200)
+        assertTrue(result1.statusCode.value() == 200)
     }
 
 
     @Test
-    fun noAuthTest(){
-        headers.add("Cookie","auth=fdsfsgsg")
+    fun noAuthTest() {
+        headers.remove("Cookie")
+        headers.add("Cookie", "auth=fdsfsgsg")
         val result1 = testRestTemplate.exchange(
             "/api/list",
             HttpMethod.GET,
             HttpEntity<Any>(headers),
             String::class.java
         )
-        var expected : String? = "<!DOCTYPE html>\n" +
+        var expected: String? = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
@@ -137,9 +153,9 @@ internal class BookRESTControllerTest {
                 "\n" +
                 "</body>\n" +
                 "</html>\n"
-        var actual = result1.body?.replace("\n","")?.replace("\r","")
-        expected = expected?.replace("\n","")?.replace("\r","")
+        val actual = result1.body?.replace("\n", "")?.replace("\r", "")
+        expected = expected?.replace("\n", "")?.replace("\r", "")
 
-        assertEquals(expected,actual)
+        assertEquals(expected, actual)
     }
 }

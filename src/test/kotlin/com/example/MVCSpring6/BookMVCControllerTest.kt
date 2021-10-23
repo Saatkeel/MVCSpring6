@@ -39,6 +39,7 @@ internal class BookMVCControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(bookMVCController)
             .build()
     }
+
     @Test
     fun `GET ListLoading`() {
         val book = ConcurrentHashMap<Int, Address>()

@@ -15,14 +15,14 @@ class AddressRepository {
         addressBook[3] = Address("Dom Kolotushkina")
     }
 
-    public fun getAddresses() : ConcurrentHashMap<Int, Address> = addressBook
+    fun getAddresses(): ConcurrentHashMap<Int, Address> = addressBook
 
-    public fun findAddressByQuery(query : String) : Map<Int, Address>{
+    fun findAddressByQuery(query: String): Map<Int, Address> {
         return addressBook.filter { it.value.address.contains(query) }
     }
 
-    public fun addAddress(address: String?) : Boolean{
-        if(address!=null && address != "") {
+    fun addAddress(address: String?): Boolean {
+        if (address != null && address != "") {
             addressBook[nextId] = Address(address)
             nextId++
             return true
@@ -30,37 +30,37 @@ class AddressRepository {
         return false
     }
 
-    public fun updateAddress(address: String?, id: Int) : Boolean {
-        if(addressBook.containsKey(id) && address != null) {
-                addressBook[id] = Address(address)
+    fun updateAddress(address: String?, id: Int): Boolean {
+        if (addressBook.containsKey(id) && address != null) {
+            addressBook[id] = Address(address)
             return true
         }
         return false
     }
 
-    public fun deleteAddress(id : Int) : Boolean {
-        if(addressBook.containsKey(id)){
+    fun deleteAddress(id: Int): Boolean {
+        if (addressBook.containsKey(id)) {
             addressBook.remove(id)
             return true
         }
-            return false
+        return false
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         var result = ""
-        addressBook.forEach{
-            result+= "Address number ${it.key}:${it.value.address}\n"
+        addressBook.forEach {
+            result += "Address number ${it.key}:${it.value.address}\n"
         }
         return result
     }
 
-    public override fun equals(other: Any?): Boolean     =
+    override fun equals(other: Any?): Boolean =
         (other is AddressRepository)
-            && addressBook == other.addressBook
+                && addressBook == other.addressBook
 
-    public fun deleteAll(){
-        addressBook.remove(3)
-        addressBook.remove(2)
-        addressBook.remove(1)
+    fun deleteAll() {
+        addressBook.forEach {
+            addressBook.remove(it.key)
+        }
     }
 }
