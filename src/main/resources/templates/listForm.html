@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form method="post" action="/app/add">
+    <table border="1">
+        <caption>Адреса</caption>
+        <tbody>
+        <tr th:each="item: ${items}">
+            <td><span th:text="${item}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

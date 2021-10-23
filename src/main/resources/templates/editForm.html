@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit address</title>
+    <form method="post">
+        <p>You have chosen id  <span th:text="${id}"></span> to edit</p>
+        <input name="address" placeholder="Type address here"/>
+        <button>Send</button>
+    </form>
+    <div th:text="${action}"></div>
+</head>
+<body>
+</body>
+</html>
