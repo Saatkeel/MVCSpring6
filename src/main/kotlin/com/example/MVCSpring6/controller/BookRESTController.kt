@@ -1,4 +1,4 @@
-package com.example.MVCSpring6
+package com.example.MVCSpring6.controller
 
 import com.example.MVCSpring6.dto.Address
 import com.example.MVCSpring6.service.AddressRepository
@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.ConcurrentHashMap
 
 
 @RestController
 @RequestMapping("/api")
+//@EnableGlobalMethodSecurity(prePostEnabled=true)
 internal class BookRESTController(@Autowired var addressRepository: AddressRepository) {
 
     @GetMapping("/list", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -43,6 +45,7 @@ internal class BookRESTController(@Autowired var addressRepository: AddressRepos
         addressRepository.updateAddress(address, id)
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}/delete", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteAddress(@PathVariable("id") id: Int) {
         addressRepository.deleteAddress(id)

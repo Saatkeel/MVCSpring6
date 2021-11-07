@@ -1,7 +1,7 @@
 package com.example.MVCSpring6
 
+import com.example.MVCSpring6.controller.BookMVCController
 import com.example.MVCSpring6.dto.Address
-import com.example.MVCSpring6.filters.AuthFilter
 import com.example.MVCSpring6.service.AddressRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -23,9 +23,6 @@ internal class BookMVCControllerTest {
 
     @InjectMockKs
     private lateinit var bookMVCController: BookMVCController
-
-    @Autowired
-    private lateinit var authFilter: AuthFilter
 
     init {
         MockKAnnotations.init(this)

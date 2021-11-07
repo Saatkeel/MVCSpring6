@@ -1,7 +1,8 @@
-package com.example.MVCSpring6
+package com.example.MVCSpring6.controller
 
 import com.example.MVCSpring6.service.AddressRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -77,6 +78,7 @@ class BookMVCController(@Autowired var addressRepository: AddressRepository) {
         return "editForm"
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/{id}/delete")
     fun deleteAddress(
         model: Model,
